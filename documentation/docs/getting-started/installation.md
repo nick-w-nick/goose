@@ -14,12 +14,12 @@ import RateLimits from '@site/src/components/RateLimits';
 <SupportedEnvironments />
 
 <Tabs>
-  <TabItem value="mac-linux" label="macOS | Linux" default>
+  <TabItem value="mac" label="macOS" default>
     Choose to install Goose on CLI and/or Desktop:
 
     <Tabs groupId="interface">
       <TabItem value="cli" label="Goose CLI" default>
-        Run the following command to install the latest version of Goose: 
+        Run the following command to install the latest version of Goose on macOS:
 
         ```sh
         curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
@@ -38,7 +38,7 @@ import RateLimits from '@site/src/components/RateLimits';
             to="https://github.com/block/goose/releases/download/stable/Goose.zip"
           >
             <IconDownload />
-            download goose desktop
+            download goose desktop for macOS
           </Link>
         </div>
         <div style={{ marginTop: '1rem' }}>  
@@ -51,7 +51,25 @@ import RateLimits from '@site/src/components/RateLimits';
 
       </TabItem>
     </Tabs>
+  </TabItem>
 
+  <TabItem value="linux" label="Linux" default>
+    Use the following instructions to install the Goose CLI on Linux:
+
+    <Tabs groupId="interface">
+      <TabItem value="cli" label="Goose CLI" default>
+        Run the following command to install the latest version of Goose:
+
+        ```sh
+        curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
+        ```
+        This script will fetch the latest version of Goose and set it up on your system.
+
+        :::tip Best Practice
+        It’s best to keep Goose updated. You can update it by re-running the installation script.
+        :::
+      </TabItem>
+    </Tabs>
   </TabItem>
 
   <TabItem value="windows" label="Windows">

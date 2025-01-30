@@ -29,7 +29,7 @@ You can use Goose via CLI or Desktop application.
     curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
     ```
   </TabItem>
-  <TabItem value="ui" label="Goose Desktop">
+  <TabItem value="ui" label="Goose Desktop (macOS only)">
     To install the latest version of Goose, click the **button** below:
     <div className="pill-button">
       <Link
@@ -37,7 +37,7 @@ You can use Goose via CLI or Desktop application.
         to="https://github.com/block/goose/releases/download/stable/Goose.zip"
       >
         <IconDownload />
-        download goose desktop
+        download goose desktop for macOS
       </Link>
     </div>
     <div style={{ marginTop: '1rem' }}>  
