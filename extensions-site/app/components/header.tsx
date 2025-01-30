@@ -8,8 +8,6 @@ import { NavLink, useLocation } from "react-router";
 export const Header = () => {
   const location = useLocation();
   const { hash, pathname, search } = location;
-  console.log({ hash, pathname, search });
-  
 
   const stableDownload = "https://github.com/block/goose/releases/download/stable/Goose.zip";
   
