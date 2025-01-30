@@ -79,7 +79,7 @@ jobs:
       - name: Lint
         run: cargo clippy -- -D warnings
 
-  desktop-lint:
+  desktop-check:
     name: Lint Electron Desktop App
     runs-on: macos-latest
     steps:
@@ -98,6 +98,11 @@ jobs:
       - name: Run Lint
         run: npm run lint:check
         working-directory: ui/desktop
+
+      - name: Run unit tests
+        run: npm run test
+        working-directory: ui/desktop
+
 
   # Faster Desktop App build for PRs only
   bundle-desktop-unsigned:
