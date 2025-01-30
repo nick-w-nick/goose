@@ -32,7 +32,7 @@ export function loadShellEnv(isProduction: boolean = false): void | EnvVariables
     // Run a login shell (-l) to get the environment
     const envStr = execSync(`${userShell} -l -c 'env'`, {
       encoding: 'utf-8',
-      env: { SHELL: userShell }, // Minimal env to avoid contamination
+      env: process.env, // Pass through current environment as starting point
     });
 
     const env = processEnvString(envStr);

@@ -64,7 +64,7 @@ describe('loadEnv', () => {
       expect(execSync).toHaveBeenCalledWith(
         "/bin/sh -l -c 'env'",
         expect.objectContaining({
-          env: { SHELL: '/bin/sh' },
+          env: process.env,
         })
       );
     });
@@ -79,7 +79,7 @@ describe('loadEnv', () => {
       expect(execSync).toHaveBeenCalledWith(
         "/bin/zsh -l -c 'env'",
         expect.objectContaining({
-          env: { SHELL: '/bin/zsh' },
+          env: process.env,
         })
       );
     });
