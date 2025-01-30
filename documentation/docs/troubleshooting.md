@@ -48,7 +48,7 @@ Another thing to note is that the DeepSeek models do not support tool calling, s
 ---
 
 ### Handling Rate Limit Errors
-Goose may encounter a `429 error` (rate limit exceeded) when interacting with LLM providers. The recommended solution is to use OpenRouter. See [Handling LLM Rate Limits][handling-rate-limits] for more info.
+Goose may encounter a `429 error` (rate limit exceeded) when interacting with LLM providers. The suggested solution is to use OpenRouter. See [Handling LLM Rate Limits][handling-rate-limits] for more info.
 
 ---
 

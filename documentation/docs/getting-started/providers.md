@@ -104,7 +104,7 @@ Below, we outline a couple of free options and how to get started with them.
 
 :::warning Limitations
 These free options are a great way to get started with Goose and explore its capabilities. However, to get the best out of Goose, 
-we recommend trying out models with native tool calling capabilities, eg. Anthropic's Claude 3.5 Sonnet.
+we suggest trying out models with native tool calling capabilities, eg. Anthropic's Claude 3.5 Sonnet.
 :::
 
 
@@ -238,7 +238,7 @@ goose configure
 :::warning
 In our testing, we have found the Google Gemini performs better that DeepSeek models, likely
 because Goose relies heavily on tool calling and DeepSeek does not support it natively yet.
-When using DeepSeek, we currently recommend the 70B model size, which requires
+When using DeepSeek, we currently suggest the 70B model size, which requires
 a powerful device to run smoothly.
 :::
 
