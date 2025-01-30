@@ -28,9 +28,6 @@ You can use Goose via CLI or Desktop application.
     ```sh
     curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
     ```
-    :::tip Automation
-    You can disable automatic interactive configuration by adding `| CONFIGURE=false bash` to the script above.
-    :::
   </TabItem>
   <TabItem value="ui" label="Goose Desktop (macOS only)">
     To install the latest version of Goose, click the **button** below:
