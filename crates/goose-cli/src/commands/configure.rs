@@ -62,8 +62,25 @@ pub async fn handle_configure() -> Result<(), Box<dyn Error>> {
                         );
                     }
                     Some(ConfigError::KeyringError(msg)) => {
+                        #[cfg(target_os = "macos")]
                         println!(
                             "\n  {} Failed to access secure storage (keyring): {} \n  Please check your system keychain and run '{}' again. \n  If your system is unable to use the keyring, please try setting secret key(s) via environment variables.",
+                            style("Error").red().italic(),
+                            msg,
+                            style("goose configure").cyan()
+                        );
+
+                        #[cfg(target_os = "windows")]
+                        println!(
+                            "\n  {} Failed to access Windows Credential Manager: {} \n  Please check Windows Credential Manager and run '{}' again. \n  If your system is unable to use the Credential Manager, please try setting secret key(s) via environment variables.",
+                            style("Error").red().italic(),
+                            msg,
+                            style("goose configure").cyan()
+                        );
+
+                        #[cfg(not(any(target_os = "macos", target_os = "windows")))]
+                        println!(
+                            "\n  {} Failed to access secure storage: {} \n  Please check your system's secure storage and run '{}' again. \n  If your system is unable to use secure storage, please try setting secret key(s) via environment variables.",
                             style("Error").red().italic(),
                             msg,
                             style("goose configure").cyan()
@@ -215,8 +232,12 @@ pub async fn configure_provider_dialog() -> Result<bool, Box<dyn Error>> {
                                     .mask('▪')
                                     .interact()?
                             } else {
-                                cliclack::input(format!("Enter new value for {}", key.name))
-                                    .interact()?
+                                let mut input =
+                                    cliclack::input(format!("Enter new value for {}", key.name));
+                                if key.default.is_some() {
+                                    input = input.default_input(&key.default.clone().unwrap());
+                                }
+                                input.interact()?
                             };
 
                             if key.secret {
@@ -235,11 +256,14 @@ pub async fn configure_provider_dialog() -> Result<bool, Box<dyn Error>> {
                             .mask('▪')
                             .interact()?
                         } else {
-                            cliclack::input(format!(
+                            let mut input = cliclack::input(format!(
                                 "Provider {} requires {}, please enter a value",
                                 provider_meta.display_name, key.name
-                            ))
-                            .interact()?
+                            ));
+                            if key.default.is_some() {
+                                input = input.default_input(&key.default.clone().unwrap());
+                            }
+                            input.interact()?
                         };
 
                         if key.secret {
@@ -268,7 +292,7 @@ pub async fn configure_provider_dialog() -> Result<bool, Box<dyn Error>> {
     spin.start("Checking your configuration...");
 
     // Use max tokens to speed up the provider test.
-    let model_config = goose::model::ModelConfig::new(model.clone()).with_max_tokens(Some(10));
+    let model_config = goose::model::ModelConfig::new(model.clone()).with_max_tokens(Some(50));
     let provider = create(provider_name, model_config)?;
 
     let messages =
