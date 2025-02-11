@@ -183,10 +183,14 @@ pub fn response_to_message(response: Value) -> anyhow::Result<Message> {
                     .as_str()
                     .unwrap_or_default()
                     .to_string();
-                let arguments = tool_call["function"]["arguments"]
+                let mut arguments = tool_call["function"]["arguments"]
                     .as_str()
                     .unwrap_or_default()
                     .to_string();
+                // If arguments is empty, we will have invalid json parsing error later.
+                if arguments.is_empty() {
+                    arguments = "{}".to_string();
+                }
 
                 if !is_valid_function_name(&function_name) {
                     let error = ToolError::NotFound(format!(
@@ -258,11 +262,12 @@ pub fn create_request(
 ) -> anyhow::Result<Value, Error> {
     if model_config.model_name.starts_with("o1-mini") {
         return Err(anyhow!(
-            "o1-mini model is not currently supported since Goose uses tool calling."
+            "o1-mini model is not currently supported since Goose uses tool calling and o1-mini does not support it. Please use o1 or o3 models instead."
         ));
     }
 
     let is_o1 = model_config.model_name.starts_with("o1");
+    let is_o3 = model_config.model_name.starts_with("o3");
 
     let system_message = json!({
         "role": if is_o1 { "developer" } else { "system" },
@@ -290,8 +295,8 @@ pub fn create_request(
             .unwrap()
             .insert("tools".to_string(), json!(tools_spec));
     }
-    // o1 models currently don't support temperature
-    if !is_o1 {
+    // o1, o3 models currently don't support temperature
+    if !is_o1 && !is_o3 {
         if let Some(temp) = model_config.temperature {
             payload
                 .as_object_mut()
@@ -302,7 +307,7 @@ pub fn create_request(
 
     // o1 models use max_completion_tokens instead of max_tokens
     if let Some(tokens) = model_config.max_tokens {
-        let key = if is_o1 {
+        let key = if is_o1 || is_o3 {
             "max_completion_tokens"
         } else {
             "max_tokens"
@@ -574,6 +579,25 @@ mod tests {
                 }
                 _ => panic!("Expected InvalidParameters error"),
             }
+        } else {
+            panic!("Expected ToolRequest content");
+        }
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_response_to_message_empty_argument() -> anyhow::Result<()> {
+        let mut response: Value = serde_json::from_str(OPENAI_TOOL_USE_RESPONSE)?;
+        response["choices"][0]["message"]["tool_calls"][0]["function"]["arguments"] =
+            serde_json::Value::String("".to_string());
+
+        let message = response_to_message(response)?;
+
+        if let MessageContent::ToolRequest(request) = &message.content[0] {
+            let tool_call = request.tool_call.as_ref().unwrap();
+            assert_eq!(tool_call.name, "example_fn");
+            assert_eq!(tool_call.arguments, json!({}));
         } else {
             panic!("Expected ToolRequest content");
         }

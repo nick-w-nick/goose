@@ -46,6 +46,14 @@ import RateLimits from '@site/src/components/RateLimits';
         <div style={{ marginTop: '1rem' }}>
           1. Unzip the downloaded `Goose.zip` file.
           2. Run the executable file to launch the Goose desktop application.
+
+          :::note Permissions
+            If you’re on an Apple Mac M3 and the Goose desktop app shows no window on launch, check and update the following:
+
+            Ensure the `~/.config` directory has read and write access.
+
+            Goose needs this access to create the log directory and file. Once permissions are granted, the app should load correctly. For steps on how to do this, refer to the  [Troubleshooting Guide](/docs/troubleshooting.md#macos-permission-issues-m3-macs)
+          :::
         </div>
 
       </TabItem>
@@ -141,14 +149,14 @@ Goose works with a set of [supported LLM providers][providers], and you’ll nee
   On initial run, you may encounter errors about keyrings when setting your API Keys. Set the needed environment variables manually, e.g.:
 
   ```bash
-  export OPENAI_API_KEY={your_google_api_key}
+  export OPENAI_API_KEY={your_api_key}
   ```
 
   To make the changes persist in WSL across sessions, add the goose path and export commands to your `.bashrc` or `.bash_profile` file so you can load it later.
 
   ```bash
   echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-  echo 'export OPENAI_API_KEY=your_google_api_key' >> ~/.bashrc
+  echo 'export OPENAI_API_KEY=your_api_key' >> ~/.bashrc
   source ~/.bashrc
   ```
   :::

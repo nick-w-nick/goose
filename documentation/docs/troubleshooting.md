@@ -19,7 +19,7 @@ If Goose is heading in the wrong direction or gets stuck, you can interrupt it b
 ### Stuck in a Loop or Unresponsive
 In rare cases, Goose may enter a "doom spiral" or become unresponsive during a long session. This is often resolved by ending the current session, and starting a new session.
 
-1. Hold down `Ctrl + C` to cancel
+1. Hold down `Ctrl+C` to cancel
 2. Start a new session:
   ```sh
   goose session
@@ -32,13 +32,13 @@ For particularly large or complex tasks, consider breaking them into smaller ses
 
 ### Context Length Exceeded Error
 
-This error occurs when the input provided to Goose exceeds the maximum token limit of the LLM being used. To resolve this try breaking down your input into smaller parts. You can also use `.goosehints` as a way to provide goose with detailed context. Refer to the [Using Goosehints Guide][goosehints] for more information.
+This error occurs when the input provided to Goose exceeds the maximum token limit of the LLM being used. To resolve this, try breaking down your input into smaller parts. You can also use `.goosehints` as a way to provide goose with detailed context. Refer to the [Using Goosehints Guide][goosehints] for more information.
 
 ---
 
 ### Using Ollama Provider
 
-Ollama provides local LLMs, which means you must first [download Ollama and run a model](/docs/getting-started/providers#local-llms-ollama) before attempting to use this provider with Goose. If you do not have the model downloaded, you'll run into the follow error:
+Ollama provides local LLMs, which means you must first [download Ollama and run a model](/docs/getting-started/providers#local-llms-ollama) before attempting to use this provider with Goose. If you do not have the model downloaded, you'll run into the following error:
 
 > ExecutionError("error sending request for url (http://localhost:11434/v1/chat/completions)")
 
@@ -108,7 +108,7 @@ You can remove all of this data by following these steps.
   * consider confirming you've stopped them all via the activity monitor
 * open the keychain and delete the credential called "goose", which contains all secrets stored by goose
 * `rm -rf ~/.config/goose`
-* For the App on macos, `rm -rf ~/Library/Application Support/Goose`
+* For the App on macOS, `rm -rf ~/Library/Application Support/Goose`
 * Delete the "Goose" app from your Applications folder
 
 After this cleanup, if you are looking to try out a fresh install of Goose, you can now start from the usual
@@ -155,6 +155,55 @@ Welcome to goose! Let's get you set up with a provider.
 │  gemini-2.0-flash-exp
 ```
 
+---
+
+### Package Runners
+
+Many of the external extensions require a package runner. For example, if you run into an error like this one:
+
+```
+Failed to start extension: {extension name}, "No such file or directory (os error 2)"
+Please check extension configuration for {extension name}.
+```
+
+... it signals that the extension may not have been installed and you need the package runner in order to do so.
+
+An example is the GitHub extension whose command is `npx -y @modelcontextprotocol/server-github`. You'd need [Node.js](https://nodejs.org/) installed on your system to run this command, as it uses npx.
+
+---
+
+### macOS Permission Issues (M3 Macs)
+
+If you encounter an issue where the Goose desktop app shows no window on launch, it may be due to file and folder permissions. This typically happens because Goose needs read and write access to the `~/.config` directory to create its log directory and file.
+
+#### How to Check and Fix Permissions:
+
+1. Open Terminal.
+2. Run the following command to check the current permissions for ~/.config:
+  ```sh
+  ls -ld ~/.config
+  ```
+**Example output:**
+  ```sh
+  drwx------  7 yourusername  staff  224 Jan 15 12:00 /Users/yourusername/.config
+  ```
+`rwx` indicates you have read (r), write (w), and execute (x) permissions for your user. If you do not see `rwx` for your user, follow the steps below.
+
+#### How to Grant Read and Write Permissions:
+
+1. To add the correct permissions, run the following commands:
+    ```sh
+    chmod u+rw ~/.config
+    ```
+    If the ~/.config directory does not exist, create it and then assign permissions:
+      ```sh
+      mkdir -p ~/.config
+      chmod u+rw ~/.config
+      ```
+2. Verify the change:
+    ```sh
+    ls -ld ~/.config
+    ```
 ---
 
 ### Need Further Help? 
